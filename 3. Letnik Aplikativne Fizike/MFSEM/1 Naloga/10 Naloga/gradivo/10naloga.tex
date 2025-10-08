@@ -1,0 +1,146 @@
+\documentclass[slovene,11pt,a4paper]{article}
+\usepackage[margin=2cm,bottom=3cm,foot=1.5cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5ex}
+
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png}
+
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage[usenames]{color}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{siunitx}
+\include{template}
+
+
+
+\title{
+\sc\large Matematično-fizikalni seminar \thisyear\\
+\bigskip
+\bf 10. naloga: Fourierova analiza}
+
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-1cm}
+
+
+Pri numeričnem izračunavanju Fourierove transformacije
+\begin{equation}
+H(f) = \int_{-\infty}^\infty
+h(t)\,{\rm exp}(2 \pi i f t)\,dt
+\end{equation}
+\begin{equation}
+h(t) = \int_{-\infty}^\infty
+H(f)\,{\rm exp}(-2 \pi i f t)\,df
+\end{equation}
+je funkcija $h(t)$ običajno predstavljena s tablico diskretnih
+vrednosti
+\begin{equation}
+h_k = h(t_k),\quad t_k = k \Delta, \quad k=0,1,2,\dots N-1.
+\end{equation}
+Pravimo, da smo funkcijo vzorčili z vzorčno gostoto $1/\Delta$.
+Za tako definiran vzorec obstaja naravna meja frekvenčnega spektra,
+ki se imenuje {\sl Nyquistova frekvenca}, $f_c =1/(2\Delta)$:
+harmonični val s to frekvenco ima v naši vzorčni gostoti ravno
+dva vzorca v periodi.
+če ima funkcija $h(t)$ frekvenčni spekter omejen na interval
+$[-f_c ,f_c ]$, potem ji z vzorčenjem nismo odvzeli nič informacije:
+kadar pa se spekter razteza izven intervala, pride do {\sl potujitve\/}
+({\sl aliasing\/}), ko se zunanji del spektra preslika v interval.
+
+Frekvenčni spekter vzorčene funkcije (3) spet računamo samo
+v $N$ točkah, če hočemo, da se ohrani količina informacije.
+Vpeljemo vsoto
+\begin{equation}
+H_n = \sum_{k=0}^{N-1}
+h_k\, {\rm exp}(2 \pi i k n / N),
+\qquad n=-N/2,\dots ,N/2,
+\end{equation}
+ki jo imenujemo diskretna Fourierova transformacija, in je povezana
+s funkcijo v (1) takole:
+\[
+H(n/(N\Delta)) \approx \Delta\cdot H_n .
+\]
+Zaradi potujitve, po kateri je $H_{-n} = H_{N-n}$, lahko mirno pustimo
+indeks $n$ v enačbi (4) teči tudi od 0 do $N$. Spodnja polovica
+tako definiranega spektra ($1 \le n \le \tfrac{N}{2}-1$) ustreza pozitivnim
+frekvencam $0 < f < f_c$, gornja polovica ($\tfrac{N}{2}+1 \le N-1$)
+pa negativnim, $-f_c < f < 0$.  Posebna vrednost pri $n=0$
+ustreza frekvenci nič (``istosmerna komponenta''), vrednost
+pri $n=N/2$ pa ustreza tako $f_c$ kot $-f_c$.
+
+\par\medskip
+Količine $h$ in $H$ so v splošnem kompleksne, simetrija
+v enih povzroči tudi simetrijo v drugih.  Posebej zanimivi
+so trije primeri:\par\medskip
+\begin{tabular}{@{\hspace{1cm}}l@{\hspace{1cm}}l@{\hspace{1cm}}l@{\hspace{1cm}}l}
+če je& $h_k$ realna & tedaj je & $H_{N-n} = H_n^\ast$ \\
+      & $h_k$ realna in soda & & $H_n$ realna in soda \\
+      & $h_k$ realna in liha & & $H_n$ imaginarna in liha
+\end{tabular}
+\par\medskip
+(ostalih ni težko izpeljati).
+V tesni zvezi s frekvenčnim spektrom je tudi moč.
+{\sl Celotna moč\/} nekega signala je neodvisna od
+reprezentacije, Parsevalova enačba pove
+\begin{equation*}
+\sum_{k=0}^{N-1} | h_k |^2 = {1\over N}\sum_{n=0}^{N-1} | H_n |^2
+\end{equation*}
+(lahko preveriš).  Pogosto pa nas bolj zanima, koliko moči
+je vsebovane v frekvenčni komponenti med $f$ in $f+\dd f$, zato
+definiramo enostransko spektralno gostoto moči ({\sl one-sided
+power spectral density\/}, PSD)
+\begin{equation*}
+P_n = | H_n |^2 + | H_{N-n} |^2 \>.
+\end{equation*}
+Pozor: s takšno definicijo v isti koš mečemo negativne
+in pozitivne frekvence, vendar sta pri realnih signalih $h_k$
+prispevka enaka, tako da je $P_n = 2\,| H_n |^2$.
+\par\medskip
+Z diskretno obratno transformacijo lahko rekonstruiramo $h_k$ iz $H_n$
+\begin{equation}
+h_k = {1\over N} \sum_{n=0}^{N-1} H_n\, {\rm exp}(-2 \pi i k n / N).
+\end{equation}
+Količine $h$ in $H$ so v splošnem kompleksne, simetrija v enih
+povzroči tudi simetrijo v drugih. Za realne $h$ so $H$ paroma
+konjugirani, $H(-f) = H(f)^*$.
+
+\medskip
+
+{\it Naloga\/}:
+\begin{itemize}
+
+\item Izračunaj Fourierov obrat nekaj enostavnih vzorcev, npr. raznih mešanic izbranih frekvenc
+(kombinacija sinusnih in kosinusnih nihanj). Primerjaj rezultate, ko je vzorec v intervalu periodičen
+(izbrane frekvence so mnogokratniki osnovne frekvence), z rezultati, ko vzorec ni periodičen.
+Opazuj pojav potujitve na vzorcu, ki vsebuje frekvence nad Nyquistovo frekvenco. Napravi še obratno
+transformacijo (5) in preveri natančnost metode (kako dobro se rekonstruirani vzorec ujema z originalnim).
+Preveri še odvisnost rezultata od dolžine vzorca in števila točk v Fourierovi analizi.
+\item Dodatno: iz datoteke `waveform.txt' (najdeš jo na Spletni učilnici predmeta) izračunaj
+Fourierov obrat zvočnega signala, ki je zabeležen v tej datoteki. Signal je bil posnet s frekvenco
+44100 Hz, zato je Nyquistova frekvenca 22050 Hz. Signal je bil dodan tudi beli šum. Ali lahko ugotoviš,
+katere frekvence so prisotne v signalu?
+
+% Mihovilovic
+% \item Signalu v datoteki {\tt PodatkiFourier.dat} \footnote{Podatke najdeš v Spletni učilnici predmeta} določi
+% frekvenčni spekter.  Kako se spremeni spekter, če analiziramo krajše intervale (64, 128, $\ldots$ točk)?
+% Kako se spremeni spekter, če v analizi upoštevamo vsako 2, 4, $\ldots$  točko?
+
+%\item Izračunaj Fourierov obrat Gaussove porazdelitve in še nekaj enostavnih vzorcev,
+%npr. raznih mešanic izbranih frekvenc. Primerjaj rezultate, ko
+%je vzorec v intervalu periodičen (izbrane frekvence so mnogokratniki
+%osnovne frekvence), z rezultati, ko vzorec ni periodičen.
+%Opazuj pojav potujitve na vzorcu, ki vsebuje frekvence nad Nyquistovo
+%frekvenco. Napravi še obratno transformacijo (5) in preveri
+%natančnost metode.
+
+\end{itemize}
+
+\end{document}
